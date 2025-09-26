@@ -1,0 +1,301 @@
+SISTEMA ESPECIALISTA PARA DIAGNÓSTICO DE LESÕES ARTICULARES EM ATLETAS
+=====================================================================
+
+BASE DE CONHECIMENTO: LESÕES ARTICULARES EM ATLETAS
+
+OBJETIVOS:
+==========
+lesao_identificada
+modalidade_imagem_recomendada
+diagnostico_final
+
+VARIÁVEIS:
+==========
+
+// Sintomas Gerais
+dor_localizada = {Sim, Não}
+inchaço = {Sim, Não}
+limitacao_movimento = {Sim, Não}
+instabilidade_articular = {Sim, Não}
+sensibilidade_toque = {Sim, Não}
+
+// Sintomas Específicos por Articulação
+dor_joelho = {Sim, Não}
+dor_ombro = {Sim, Não}
+dor_tornozelo = {Sim, Não}
+dor_pulso = {Sim, Não}
+
+// Sintomas Específicos por Tipo de Lesão
+travamento_joelho = {Sim, Não}
+estalido_joelho = {Sim, Não}
+fraqueza_muscular = {Sim, Não}
+hipervascularizacao = {Sim, Não}
+espessamento_tendao = {Sim, Não}
+
+// Histórico e Contexto
+trauma_recente = {Sim, Não}
+movimento_brusco = {Sim, Não}
+sobrecarga_repetitiva = {Sim, Não}
+atividade_esportiva = {Sim, Não}
+
+// Resultados de Exames de Imagem
+ruptura_lca = {Sim, Não}
+lesao_meniscal = {Sim, Não}
+lesao_manguito = {Sim, Não}
+fratura_estresse = {Sim, Não}
+tendinite_confirmada = {Sim, Não}
+
+// Variáveis de Saída
+lesao_identificada = {entorse_distensao, lesao_meniscal, lesao_lca, tendinite_tendinopatia, lesao_manguito_rotador, fratura_estresse, nenhuma_lesao}
+modalidade_imagem_recomendada = {ressonancia_magnetica, ultrassonografia, radiografia, tomografia_computadorizada, nenhuma}
+diagnostico_final = {confirmado, suspeita, descartado}
+
+REGRAS DE PRODUÇÃO:
+==================
+
+// Regras para Entorses e Distensões
+Regra 1
+SE dor_localizada = Sim
+E inchaço = Sim
+E limitacao_movimento = Sim
+E trauma_recente = Sim
+ENTÃO lesao_identificada = entorse_distensao CNF 85%
+
+Regra 2
+SE lesao_identificada = entorse_distensao
+ENTÃO modalidade_imagem_recomendada = ressonancia_magnetica CNF 80%
+
+// Regras para Lesões Meniscais
+Regra 3
+SE dor_joelho = Sim
+E travamento_joelho = Sim
+OU estalido_joelho = Sim
+E inchaço = Sim
+ENTÃO lesao_identificada = lesao_meniscal CNF 90%
+
+Regra 4
+SE lesao_identificada = lesao_meniscal
+ENTÃO modalidade_imagem_recomendada = ressonancia_magnetica CNF 95%
+
+// Regras para Lesão do Ligamento Cruzado Anterior (LCA)
+Regra 5
+SE dor_joelho = Sim
+E inchaço = Sim
+E instabilidade_articular = Sim
+E movimento_brusco = Sim
+ENTÃO lesao_identificada = lesao_lca CNF 85%
+
+Regra 6
+SE lesao_identificada = lesao_lca
+ENTÃO modalidade_imagem_recomendada = ressonancia_magnetica CNF 100%
+
+Regra 7
+SE ruptura_lca = Sim
+E lesao_identificada = lesao_lca
+ENTÃO diagnostico_final = confirmado CNF 100%
+
+// Regras para Tendinite e Tendinopatia
+Regra 8
+SE dor_localizada = Sim
+E sensibilidade_toque = Sim
+E espessamento_tendao = Sim
+OU hipervascularizacao = Sim
+ENTÃO lesao_identificada = tendinite_tendinopatia CNF 80%
+
+Regra 9
+SE lesao_identificada = tendinite_tendinopatia
+ENTÃO modalidade_imagem_recomendada = ultrassonografia CNF 85%
+
+Regra 10
+SE tendinite_confirmada = Sim
+E lesao_identificada = tendinite_tendinopatia
+ENTÃO diagnostico_final = confirmado CNF 100%
+
+// Regras para Lesões do Manguito Rotador
+Regra 11
+SE dor_ombro = Sim
+E fraqueza_muscular = Sim
+E limitacao_movimento = Sim
+ENTÃO lesao_identificada = lesao_manguito_rotador CNF 80%
+
+Regra 12
+SE lesao_identificada = lesao_manguito_rotador
+ENTÃO modalidade_imagem_recomendada = ressonancia_magnetica CNF 90%
+
+Regra 13
+SE lesao_manguito = Sim
+E lesao_identificada = lesao_manguito_rotador
+ENTÃO diagnostico_final = confirmado CNF 100%
+
+// Regras para Fraturas por Estresse
+Regra 14
+SE dor_localizada = Sim
+E sensibilidade_toque = Sim
+E sobrecarga_repetitiva = Sim
+E atividade_esportiva = Sim
+ENTÃO lesao_identificada = fratura_estresse CNF 75%
+
+Regra 15
+SE lesao_identificada = fratura_estresse
+ENTÃO modalidade_imagem_recomendada = radiografia CNF 70%
+
+Regra 16
+SE fratura_estresse = Sim
+E lesao_identificada = fratura_estresse
+ENTÃO diagnostico_final = confirmado CNF 100%
+
+// Regras de Suspeita (quando não há confirmação completa)
+Regra 17
+SE dor_localizada = Sim
+E inchaço = Sim
+E lesao_identificada = nenhuma_lesao
+ENTÃO diagnostico_final = suspeita CNF 60%
+
+// Regras para Escolha de Modalidade Secundária
+Regra 18
+SE lesao_identificada = fratura_estresse
+E fratura_estresse <> Sim
+ENTÃO modalidade_imagem_recomendada = ressonancia_magnetica CNF 80%
+
+Regra 19
+SE lesao_identificada = lesao_manguito_rotador
+E lesao_identificada <> tendinite_tendinopatia
+ENTÃO modalidade_imagem_recomendada = ressonancia_magnetica CNF 70%
+
+// Regras de Exclusão
+Regra 20
+SE trauma_recente = Não
+E dor_localizada = Não
+E inchaço = Não
+ENTÃO lesao_identificada = nenhuma_lesao CNF 90%
+
+Regra 21
+SE lesao_identificada = nenhuma_lesao
+ENTÃO modalidade_imagem_recomendada = nenhuma CNF 100%
+
+Regra 22
+SE lesao_identificada = nenhuma_lesao
+ENTÃO diagnostico_final = descartado CNF 100%
+
+INTERFACE DE CONSULTA COM ASSOCIAÇÕES:
+======================================
+
+SINTOMAS GERAIS:
+================
+Pergunta 1: "O atleta apresenta dor localizada na região afetada?"
+Variável: dor_localizada
+Ajuda: "Dor localizada refere-se à dor específica em uma região articular bem definida, diferente de dor difusa ou generalizada"
+
+Pergunta 2: "Há presença de inchaço (edema) na região?"
+Variável: inchaço
+Ajuda: "Inchaço pode ser visual (aumento de volume) ou palpável (edema). Pode aparecer imediatamente após trauma ou gradualmente"
+
+Pergunta 3: "Existe limitação de movimento articular?"
+Variável: limitacao_movimento
+Ajuda: "Limitação de movimento inclui dificuldade para flexionar, estender, rotacionar ou realizar movimentos normais da articulação"
+
+Pergunta 4: "O atleta relata sensação de instabilidade articular?"
+Variável: instabilidade_articular
+Ajuda: "Instabilidade articular é a sensação de 'falseio', 'cedência' ou 'falha' da articulação durante movimentos"
+
+Pergunta 5: "Há sensibilidade ao toque na região?"
+Variável: sensibilidade_toque
+Ajuda: "Sensibilidade ao toque é dor ao pressionar, palpar ou tocar a região afetada, mesmo com pressão leve"
+
+SINTOMAS ESPECÍFICOS POR ARTICULAÇÃO:
+====================================
+Pergunta 6: "A dor está especificamente localizada no joelho?"
+Variável: dor_joelho
+Ajuda: "Dor no joelho pode indicar lesões meniscais, ligamentares (LCA, LCP) ou problemas articulares específicos"
+
+Pergunta 7: "A dor está especificamente localizada no ombro?"
+Variável: dor_ombro
+Ajuda: "Dor no ombro pode indicar lesões do manguito rotador, tendinite, bursite ou problemas articulares"
+
+Pergunta 8: "A dor está especificamente localizada no tornozelo?"
+Variável: dor_tornozelo
+Ajuda: "Dor no tornozelo pode indicar entorses, distensões ou lesões ligamentares específicas"
+
+Pergunta 9: "A dor está especificamente localizada no pulso?"
+Variável: dor_pulso
+Ajuda: "Dor no pulso pode indicar tendinite, síndrome do túnel do carpo ou lesões ligamentares"
+
+SINTOMAS ESPECÍFICOS POR TIPO DE LESÃO:
+=======================================
+Pergunta 10: "Há travamento ou estalido no joelho?"
+Variável: travamento_joelho
+Ajuda: "Travamento é quando o joelho 'trava' em uma posição. Estalido é som audível durante movimentos"
+
+Pergunta 11: "Há estalido audível no joelho durante movimentos?"
+Variável: estalido_joelho
+Ajuda: "Estalido audível pode indicar lesão meniscal, problemas de cartilagem ou instabilidade articular"
+
+Pergunta 12: "O atleta apresenta fraqueza muscular?"
+Variável: fraqueza_muscular
+Ajuda: "Fraqueza muscular pode indicar lesão de nervos, tendões ou músculos específicos"
+
+Pergunta 13: "Há evidência de hipervascularização (aumento de vasos sanguíneos)?"
+Variável: hipervascularizacao
+Ajuda: "Hypervascularização é aumento de vasos sanguíneos visível em exames de imagem, comum em tendinites"
+
+Pergunta 14: "Há evidência de espessamento do tendão?"
+Variável: espessamento_tendao
+Ajuda: "Espessamento do tendão é visível em exames de imagem e indica processo inflamatório ou degenerativo"
+
+HISTÓRICO E CONTEXTO:
+====================
+Pergunta 15: "Houve trauma recente (queda, torção, impacto)?"
+Variável: trauma_recente
+Ajuda: "Trauma recente inclui quedas, torções, impactos diretos ou movimentos forçados que causaram a lesão"
+
+Pergunta 16: "O atleta realizou movimento brusco ou súbito?"
+Variável: movimento_brusco
+Ajuda: "Movimento brusco inclui mudanças súbitas de direção, paradas abruptas ou movimentos inesperados"
+
+Pergunta 17: "Há histórico de sobrecarga repetitiva?"
+Variável: sobrecarga_repetitiva
+Ajuda: "Sobrecarga repetitiva é exercício intenso e frequente sem adequado período de descanso e recuperação"
+
+Pergunta 18: "O atleta pratica atividade esportiva regularmente?"
+Variável: atividade_esportiva
+Ajuda: "Atividade esportiva regular aumenta o risco de lesões por sobrecarga e trauma repetitivo"
+
+RESULTADOS DE EXAMES DE IMAGEM:
+==============================
+Pergunta 19: "Exame de imagem confirmou ruptura do LCA?"
+Variável: ruptura_lca
+Ajuda: "Ruptura do LCA é confirmada por ressonância magnética mostrando descontinuidade do ligamento"
+
+Pergunta 20: "Exame de imagem confirmou lesão meniscal?"
+Variável: lesao_meniscal
+Ajuda: "Lesão meniscal é confirmada por ressonância magnética mostrando alteração na estrutura do menisco"
+
+Pergunta 21: "Exame de imagem confirmou lesão do manguito rotador?"
+Variável: lesao_manguito
+Ajuda: "Lesão do manguito rotador é confirmada por ressonância magnética ou ultrassonografia"
+
+Pergunta 22: "Exame de imagem confirmou fratura por estresse?"
+Variável: fratura_estresse
+Ajuda: "Fratura por estresse é confirmada por radiografia, ressonância magnética ou tomografia computadorizada"
+
+Pergunta 23: "Exame de imagem confirmou tendinite?"
+Variável: tendinite_confirmada
+Ajuda: "Tendinite é confirmada por ultrassonografia ou ressonância magnética mostrando inflamação do tendão"
+
+EXPLICAÇÕES DO SISTEMA:
+======================
+
+Explicação 1: "Lesão de LCA diagnosticada devido à presença de dor, inchaço, instabilidade e movimento brusco"
+Explicação 2: "Ressonância magnética recomendada para melhor visualização de estruturas ligamentares"
+Explicação 3: "Ultrassonografia indicada para avaliação dinâmica de tendões superficiais"
+Explicação 4: "Radiografia inicial para descartar fraturas ósseas"
+Explicação 5: "Tomografia computadorizada para avaliação detalhada de fraturas complexas"
+
+CONFIGURAÇÕES DO SISTEMA:
+=========================
+
+Nome da Base: Lesões Articulares em Atletas
+Versão: 1.0
+Autor: Sistema de Diagnóstico Médico
+Data: 2024
+Descrição: Sistema especialista para diagnóstico de lesões articulares em atletas baseado em sintomas clínicos e recomendações de exames de imagem

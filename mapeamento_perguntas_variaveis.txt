@@ -1,0 +1,108 @@
+MAPEAMENTO DE PERGUNTAS E VARIÁVEIS PARA EXPERT SINTA
+=====================================================
+
+ESTRUTURA ORGANIZADA PARA IMPLEMENTAÇÃO:
+
+1. SINTOMAS GERAIS (Perguntas 1-5):
+===================================
+Pergunta 1 → Variável: dor_localizada
+Pergunta 2 → Variável: inchaço  
+Pergunta 3 → Variável: limitacao_movimento
+Pergunta 4 → Variável: instabilidade_articular
+Pergunta 5 → Variável: sensibilidade_toque
+
+2. SINTOMAS ESPECÍFICOS POR ARTICULAÇÃO (Perguntas 6-9):
+========================================================
+Pergunta 6 → Variável: dor_joelho
+Pergunta 7 → Variável: dor_ombro
+Pergunta 8 → Variável: dor_tornozelo
+Pergunta 9 → Variável: dor_pulso
+
+3. SINTOMAS ESPECÍFICOS POR TIPO DE LESÃO (Perguntas 10-14):
+===========================================================
+Pergunta 10 → Variável: travamento_joelho
+Pergunta 11 → Variável: estalido_joelho
+Pergunta 12 → Variável: fraqueza_muscular
+Pergunta 13 → Variável: hipervascularizacao
+Pergunta 14 → Variável: espessamento_tendao
+
+4. HISTÓRICO E CONTEXTO (Perguntas 15-18):
+==========================================
+Pergunta 15 → Variável: trauma_recente
+Pergunta 16 → Variável: movimento_brusco
+Pergunta 17 → Variável: sobrecarga_repetitiva
+Pergunta 18 → Variável: atividade_esportiva
+
+5. RESULTADOS DE EXAMES DE IMAGEM (Perguntas 19-23):
+===================================================
+Pergunta 19 → Variável: ruptura_lca
+Pergunta 20 → Variável: lesao_meniscal
+Pergunta 21 → Variável: lesao_manguito
+Pergunta 22 → Variável: fratura_estresse
+Pergunta 23 → Variável: tendinite_confirmada
+
+SEQUÊNCIA DE CONSULTA RECOMENDADA:
+=================================
+
+FASE 1 - TRIAGEM INICIAL (Perguntas 1-5):
+- Identificar presença de sintomas gerais
+- Determinar se há lesão ativa
+
+FASE 2 - LOCALIZAÇÃO (Perguntas 6-9):
+- Identificar articulação afetada
+- Direcionar para regras específicas
+
+FASE 3 - SINTOMAS ESPECÍFICOS (Perguntas 10-14):
+- Identificar sinais específicos de lesão
+- Refinar diagnóstico
+
+FASE 4 - CONTEXTO (Perguntas 15-18):
+- Entender mecanismo de lesão
+- Avaliar fatores de risco
+
+FASE 5 - CONFIRMAÇÃO (Perguntas 19-23):
+- Confirmar diagnóstico com exames
+- Ajustar nível de confiança
+
+AJUDAS CONTEXTUAIS POR CATEGORIA:
+=================================
+
+SINTOMAS GERAIS:
+- Explicam diferença entre dor localizada e difusa
+- Descrevem tipos de inchaço
+- Definem limitação de movimento
+- Explicam instabilidade articular
+- Descrevem sensibilidade ao toque
+
+SINTOMAS ESPECÍFICOS:
+- Relacionam sintomas com possíveis lesões
+- Explicam sinais específicos (travamento, estalido)
+- Descrevem achados de imagem
+
+HISTÓRICO E CONTEXTO:
+- Definem tipos de trauma
+- Explicam sobrecarga repetitiva
+- Relacionam atividade esportiva com risco
+
+EXAMES DE IMAGEM:
+- Explicam como cada exame confirma lesões
+- Descrevem achados típicos
+- Relacionam modalidade com tipo de lesão
+
+IMPLEMENTAÇÃO NO EXPERT SINTA:
+==============================
+
+1. Carregar variáveis na ordem das perguntas
+2. Associar cada pergunta com sua variável correspondente
+3. Incluir ajuda contextual para cada pergunta
+4. Configurar sequência de perguntas por fases
+5. Testar fluxo de consulta completo
+
+VANTAGENS DA ORGANIZAÇÃO:
+=========================
+- Interface mais intuitiva
+- Perguntas agrupadas logicamente
+- Ajudas contextuais específicas
+- Sequência de consulta otimizada
+- Melhor experiência do usuário
+- Diagnóstico mais preciso

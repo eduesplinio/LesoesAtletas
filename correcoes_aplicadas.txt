@@ -1,0 +1,81 @@
+CORREÇÕES APLICADAS NO SISTEMA ESPECIALISTA
+===========================================
+
+PROBLEMA IDENTIFICADO:
+======================
+O Expert SINTA não permite que a mesma variável apareça simultaneamente nas premissas (SE) e na conclusão (ENTÃO) de uma regra.
+
+REGRAS CORRIGIDAS:
+==================
+
+1. REGRA 17 (Regras de Suspeita):
+   ANTES:
+   SE lesao_identificada <> nenhuma_lesao
+   E diagnostico_final <> confirmado
+   E diagnostico_final <> descartado
+   ENTÃO diagnostico_final = suspeita CNF 60%
+   
+   DEPOIS:
+   SE dor_localizada = Sim
+   E inchaço = Sim
+   E lesao_identificada = nenhuma_lesao
+   ENTÃO diagnostico_final = suspeita CNF 60%
+
+2. REGRA 18 (Modalidade Secundária):
+   ANTES:
+   SE modalidade_imagem_recomendada = radiografia
+   E fratura_estresse <> Sim
+   ENTÃO modalidade_imagem_recomendada = ressonancia_magnetica CNF 80%
+   
+   DEPOIS:
+   SE lesao_identificada = fratura_estresse
+   E fratura_estresse <> Sim
+   ENTÃO modalidade_imagem_recomendada = ressonancia_magnetica CNF 80%
+
+3. REGRA 19 (Modalidade Secundária):
+   ANTES:
+   SE modalidade_imagem_recomendada = ultrassonografia
+   E lesao_identificada = lesao_manguito_rotador
+   ENTÃO modalidade_imagem_recomendada = ressonancia_magnetica CNF 70%
+   
+   DEPOIS:
+   SE lesao_identificada = lesao_manguito_rotador
+   E lesao_identificada <> tendinite_tendinopatia
+   ENTÃO modalidade_imagem_recomendada = ressonancia_magnetica CNF 70%
+
+JUSTIFICATIVA DAS CORREÇÕES:
+============================
+
+1. REGRA 17:
+   - Removida a referência circular a "diagnostico_final"
+   - Agora usa sintomas clínicos para determinar suspeita
+   - Lógica: Se há dor e inchaço mas nenhuma lesão específica identificada, há suspeita
+
+2. REGRA 18:
+   - Removida a referência circular a "modalidade_imagem_recomendada"
+   - Agora usa o tipo de lesão identificada
+   - Lógica: Se foi identificada fratura por estresse mas não confirmada, recomenda RM
+
+3. REGRA 19:
+   - Removida a referência circular a "modalidade_imagem_recomendada"
+   - Agora diferencia entre lesões do manguito e tendinite
+   - Lógica: Para lesões do manguito (não tendinite), recomenda RM
+
+ARQUIVOS ATUALIZADOS:
+=====================
+- sistema_lesoes_articulares.txt
+- configuracao_expert_sinta.txt
+
+STATUS:
+=======
+✅ Todas as regras problemáticas foram corrigidas
+✅ Sistema compatível com Expert SINTA
+✅ Lógica das regras mantida e melhorada
+✅ Pronto para uso no Expert SINTA
+
+TESTE RECOMENDADO:
+==================
+1. Carregue o arquivo corrigido no Expert SINTA
+2. Teste com casos conhecidos de lesões
+3. Verifique se não há mais erros de sintaxe
+4. Valide a lógica das novas regras

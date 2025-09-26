@@ -1,0 +1,214 @@
+DOCUMENTAÇÃO TÉCNICA DO SISTEMA ESPECIALISTA
+=============================================
+Diagnóstico de Lesões Articulares em Atletas
+Baseado no Expert SINTA v1.1
+
+1. ARQUITETURA DO SISTEMA
+=========================
+
+1.1 Componentes Principais:
+- Base de Conhecimento: Regras de produção com fatores de confiança
+- Máquina de Inferência: Encadeamento para trás (backward chaining)
+- Interface de Usuário: Sistema de perguntas e respostas
+- Módulo de Explicação: Justificativas para as conclusões
+
+1.2 Metodologia:
+- Representação do conhecimento baseada em regras SE-ENTÃO
+- Tratamento de incerteza através de fatores de confiança (CNF)
+- Processamento sequencial de sintomas clínicos
+- Recomendação automática de modalidades de imagem
+
+2. ESTRUTURA DA BASE DE CONHECIMENTO
+===================================
+
+2.1 Objetivos do Sistema:
+- lesao_identificada: Identifica o tipo de lesão
+- modalidade_imagem_recomendada: Sugere exame de imagem
+- diagnostico_final: Confirma, suspeita ou descarta lesão
+
+2.2 Variáveis de Entrada:
+- Sintomas Gerais: dor_localizada, inchaço, limitacao_movimento
+- Sintomas Específicos: dor_joelho, dor_ombro, travamento_joelho
+- Histórico: trauma_recente, movimento_brusco, sobrecarga_repetitiva
+- Exames: ruptura_lca, lesao_meniscal, lesao_manguito
+
+2.3 Variáveis de Saída:
+- lesao_identificada: {entorse_distensao, lesao_meniscal, lesao_lca, tendinite_tendinopatia, lesao_manguito_rotador, fratura_estresse, nenhuma_lesao}
+- modalidade_imagem_recomendada: {ressonancia_magnetica, ultrassonografia, radiografia, tomografia_computadorizada, nenhuma}
+- diagnostico_final: {confirmado, suspeita, descartado}
+
+3. REGRAS DE PRODUÇÃO
+====================
+
+3.1 Estrutura das Regras:
+Formato: SE condição E/OU condição ENTÃO conclusão CNF X%
+
+3.2 Categorias de Regras:
+- Regras de Identificação: Determinam o tipo de lesão
+- Regras de Modalidade: Recomendam exame de imagem
+- Regras de Confirmação: Confirmam diagnóstico com exames
+- Regras de Suspeita: Indicam probabilidade de lesão
+- Regras de Exclusão: Descartam lesões
+
+3.3 Exemplos de Regras:
+
+Regra de Identificação (LCA):
+SE dor_joelho = Sim
+E inchaço = Sim
+E instabilidade_articular = Sim
+E movimento_brusco = Sim
+ENTÃO lesao_identificada = lesao_lca CNF 85%
+
+Regra de Modalidade:
+SE lesao_identificada = lesao_lca
+ENTÃO modalidade_imagem_recomendada = ressonancia_magnetica CNF 100%
+
+4. FATORES DE CONFIANÇA
+=======================
+
+4.1 Escala de Confiança:
+- 100%: Diagnóstico definitivo
+- 90-99%: Diagnóstico muito provável
+- 80-89%: Diagnóstico provável
+- 70-79%: Diagnóstico possível
+- 60-69%: Suspeita
+- <60%: Baixa probabilidade
+
+4.2 Cálculo de Confiança:
+- Baseado em evidências clínicas
+- Considera especificidade dos sintomas
+- Pondera histórico e contexto
+- Ajusta conforme exames complementares
+
+5. ALGORITMO DE INFERÊNCIA
+==========================
+
+5.1 Encadeamento para Trás:
+1. Identifica objetivo (tipo de lesão)
+2. Busca regras que concluem o objetivo
+3. Verifica condições das regras
+4. Solicita informações necessárias
+5. Calcula confiança final
+6. Recomenda modalidade de imagem
+
+5.2 Processo de Consulta:
+1. Coleta sintomas gerais
+2. Identifica região afetada
+3. Avalia histórico de trauma
+4. Aplica regras específicas
+5. Calcula probabilidades
+6. Gera recomendações
+
+6. MODALIDADES DE IMAGEM
+========================
+
+6.1 Ressonância Magnética (RM):
+- Indicações: Ligamentos, meniscos, tendões profundos
+- Vantagens: Excelente contraste de tecidos moles
+- Limitações: Custo elevado, tempo de exame
+
+6.2 Ultrassonografia (USG):
+- Indicações: Tendões superficiais, avaliação dinâmica
+- Vantagens: Tempo real, baixo custo
+- Limitações: Depende do operador
+
+6.3 Radiografia (RX):
+- Indicações: Fraturas ósseas, alterações estruturais
+- Vantagens: Baixo custo, disponibilidade
+- Limitações: Limitada para tecidos moles
+
+6.4 Tomografia Computadorizada (TC):
+- Indicações: Fraturas complexas, planejamento cirúrgico
+- Vantagens: Visualização detalhada de ossos
+- Limitações: Radiação ionizante
+
+7. INTERFACE DE USUÁRIO
+=======================
+
+7.1 Sistema de Perguntas:
+- Perguntas sequenciais e contextuais
+- Opções binárias (Sim/Não)
+- Ajudas contextuais disponíveis
+- Possibilidade de revisão
+
+7.2 Apresentação de Resultados:
+- Diagnóstico com nível de confiança
+- Modalidade de imagem recomendada
+- Explicações das conclusões
+- Sugestões de próximos passos
+
+8. VALIDAÇÃO E TESTES
+=====================
+
+8.1 Casos de Teste:
+- Lesão de LCA: Dor, inchaço, instabilidade, movimento brusco
+- Tendinite: Dor localizada, sensibilidade, espessamento
+- Fratura por estresse: Dor, sensibilidade, sobrecarga
+
+8.2 Métricas de Avaliação:
+- Sensibilidade: Capacidade de detectar lesões
+- Especificidade: Capacidade de descartar lesões
+- Precisão: Concordância com diagnóstico final
+- Valor preditivo: Probabilidade de lesão real
+
+9. LIMITAÇÕES E CONSIDERAÇÕES
+=============================
+
+9.1 Limitações Técnicas:
+- Baseado apenas em sintomas clínicos
+- Não considera histórico médico completo
+- Não avalia fatores psicológicos
+- Limitado a lesões articulares comuns
+
+9.2 Limitações Clínicas:
+- Não substitui avaliação médica
+- Requer confirmação por exames
+- Não considera variações individuais
+- Pode gerar falsos positivos/negativos
+
+10. MANUTENÇÃO E ATUALIZAÇÃO
+============================
+
+10.1 Atualizações Necessárias:
+- Revisão periódica das regras
+- Ajuste dos fatores de confiança
+- Adição de novos tipos de lesões
+- Incorporação de novas modalidades
+
+10.2 Processo de Manutenção:
+- Análise de casos não cobertos
+- Revisão de literatura médica
+- Consulta com especialistas
+- Testes de validação
+
+11. IMPLEMENTAÇÃO NO EXPERT SINTA
+=================================
+
+11.1 Arquivos Necessários:
+- sistema_lesoes_articulares.txt: Base de conhecimento completa
+- configuracao_expert_sinta.txt: Configuração específica
+- guia_uso_sistema.txt: Manual do usuário
+
+11.2 Passos de Implementação:
+1. Instalar Expert SINTA
+2. Carregar arquivo de configuração
+3. Importar base de conhecimento
+4. Configurar interface de usuário
+5. Testar sistema com casos conhecidos
+
+12. REFERÊNCIAS BIBLIOGRÁFICAS
+==============================
+
+- Manual Expert SINTA v1.1 - Laboratório de Inteligência Artificial UFC
+- Guidelines para diagnóstico de lesões esportivas
+- Protocolos de imagem em medicina esportiva
+- Estudos de validação de sistemas especialistas médicos
+
+13. CONTATOS E SUPORTE
+======================
+
+Para dúvidas sobre implementação ou uso do sistema:
+- Consultar documentação do Expert SINTA
+- Revisar casos de teste fornecidos
+- Validar com especialistas em medicina esportiva
+- Considerar atualizações baseadas em evidências

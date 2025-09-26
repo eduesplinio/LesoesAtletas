@@ -1,0 +1,81 @@
+GUIA DE USO DO SISTEMA ESPECIALISTA
+====================================
+Diagnóstico de Lesões Articulares em Atletas
+
+COMO USAR O SISTEMA:
+====================
+
+1. INICIALIZAÇÃO:
+   - Abra o Expert SINTA
+   - Carregue a base "Lesões Articulares em Atletas"
+   - Inicie uma nova consulta
+
+2. PROCESSO DE CONSULTA:
+   O sistema fará perguntas sequenciais sobre os sintomas do atleta.
+   Responda "Sim" ou "Não" para cada pergunta.
+
+3. PERGUNTAS TÍPICAS:
+   - O atleta apresenta dor localizada?
+   - Há presença de inchaço?
+   - Existe limitação de movimento?
+   - Houve trauma recente?
+   - A dor está no joelho/ombro?
+
+4. RESULTADOS:
+   O sistema fornecerá:
+   - Tipo de lesão identificada
+   - Modalidade de imagem recomendada
+   - Nível de confiança do diagnóstico
+
+EXEMPLOS DE CONSULTAS:
+=====================
+
+CASO 1 - Lesão de LCA:
+Perguntas: Dor no joelho (Sim), Inchaço (Sim), Instabilidade (Sim), Movimento brusco (Sim)
+Resultado: lesao_identificada = lesao_lca (85%), modalidade_imagem = ressonancia_magnetica (100%)
+
+CASO 2 - Tendinite:
+Perguntas: Dor localizada (Sim), Sensibilidade (Sim), Espessamento tendão (Sim)
+Resultado: lesao_identificada = tendinite_tendinopatia (80%), modalidade_imagem = ultrassonografia (85%)
+
+CASO 3 - Fratura por Estresse:
+Perguntas: Dor localizada (Sim), Sensibilidade (Sim), Sobrecarga repetitiva (Sim), Atividade esportiva (Sim)
+Resultado: lesao_identificada = fratura_estresse (75%), modalidade_imagem = radiografia (70%)
+
+INTERPRETAÇÃO DOS RESULTADOS:
+=============================
+
+FATORES DE CONFIANÇA (CNF):
+- 90-100%: Diagnóstico muito provável
+- 80-89%: Diagnóstico provável
+- 70-79%: Diagnóstico possível
+- 60-69%: Suspeita
+- <60%: Baixa probabilidade
+
+MODALIDADES DE IMAGEM:
+- Ressonância Magnética: Ligamentos, meniscos, tendões profundos
+- Ultrassonografia: Tendões superficiais, avaliação dinâmica
+- Radiografia: Fraturas ósseas, alterações estruturais
+- Tomografia: Fraturas complexas, planejamento cirúrgico
+
+LIMITAÇÕES DO SISTEMA:
+======================
+- Não substitui avaliação médica completa
+- Baseado apenas em sintomas clínicos
+- Requer confirmação por exames de imagem
+- Não considera histórico médico completo
+
+RECOMENDAÇÕES:
+==============
+1. Use como ferramenta de triagem inicial
+2. Sempre confirme com exames de imagem
+3. Consulte especialista em medicina esportiva
+4. Considere fatores individuais do atleta
+5. Monitore evolução dos sintomas
+
+MANUTENÇÃO DO SISTEMA:
+======================
+- Atualize regras conforme novos conhecimentos
+- Revise fatores de confiança baseado em evidências
+- Adicione novos tipos de lesões conforme necessário
+- Mantenha base de dados atualizada
